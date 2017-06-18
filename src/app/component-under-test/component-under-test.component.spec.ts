@@ -1,32 +1,37 @@
 import {async, ComponentFixture, TestBed} from '@angular/core/testing';
 
 import {ComponentUnderTestComponent} from './component-under-test.component';
+import {Component} from "@angular/core";
 
 describe('ComponentUnderTestComponent', () => {
-  let component: ComponentUnderTestComponent;
-  let fixture: ComponentFixture<ComponentUnderTestComponent>;
+  let testHostComponent: TestHostComponent;
+  let testHostFixture: ComponentFixture<TestHostComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ComponentUnderTestComponent]
+      declarations: [ComponentUnderTestComponent, TestHostComponent]
     })
       .compileComponents();
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(ComponentUnderTestComponent);
-    component = fixture.componentInstance;
-    fixture.detectChanges();
+    testHostFixture = TestBed.createComponent(TestHostComponent);
+    testHostComponent = testHostFixture.componentInstance;
+    testHostFixture.detectChanges();
   });
 
   it('should be created', () => {
-    expect(component).toBeTruthy();
+    expect(testHostComponent).toBeTruthy();
   });
 
   it('should show TEST INPUT', () => {
-    component.input = 'test input';
-    component.processInput();
-    fixture.detectChanges();
-    expect(fixture.nativeElement.querySelector('div').innerText).toEqual('TEST INPUT');
+    expect(testHostFixture.nativeElement.querySelector('div').innerText).toEqual('TEST INPUT');
   });
+
+  @Component({
+    selector: `host-component`,
+    template: `<component-under-test input="test input"></component-under-test>`
+  })
+  class TestHostComponent {
+  }
 });
