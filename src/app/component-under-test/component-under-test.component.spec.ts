@@ -17,21 +17,28 @@ describe('ComponentUnderTestComponent', () => {
   beforeEach(() => {
     testHostFixture = TestBed.createComponent(TestHostComponent);
     testHostComponent = testHostFixture.componentInstance;
-    testHostFixture.detectChanges();
-  });
-
-  it('should be created', () => {
-    expect(testHostComponent).toBeTruthy();
   });
 
   it('should show TEST INPUT', () => {
+    testHostComponent.setInput('test input');
+    testHostFixture.detectChanges();
     expect(testHostFixture.nativeElement.querySelector('div').innerText).toEqual('TEST INPUT');
   });
 
+  it('should show DIFFERENT TEST INPUT', () => {
+    testHostComponent.setInput('different test input');
+    testHostFixture.detectChanges();
+    expect(testHostFixture.nativeElement.querySelector('div').innerText).toEqual('DIFFERENT TEST INPUT');
+  });
   @Component({
     selector: `host-component`,
-    template: `<component-under-test input="test input"></component-under-test>`
+    template: `<component-under-test [input]="input"></component-under-test>`
   })
   class TestHostComponent {
+    private input: string;
+
+    setInput(newInput: string) {
+      this.input = newInput;
+    }
   }
 });
