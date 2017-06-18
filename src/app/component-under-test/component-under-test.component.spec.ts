@@ -2,6 +2,7 @@ import {async, ComponentFixture, TestBed} from '@angular/core/testing';
 
 import {ComponentUnderTestComponent} from './component-under-test.component';
 import {Component} from "@angular/core";
+import {ViewChild} from "@angular/core";
 
 describe('ComponentUnderTestComponent', () => {
   let testHostComponent: TestHostComponent;
@@ -20,25 +21,22 @@ describe('ComponentUnderTestComponent', () => {
   });
 
   it('should show TEST INPUT', () => {
-    testHostComponent.setInput('test input');
+    testHostComponent.componentUnderTestComponent.input = 'test input';
     testHostFixture.detectChanges();
     expect(testHostFixture.nativeElement.querySelector('div').innerText).toEqual('TEST INPUT');
   });
 
   it('should show DIFFERENT TEST INPUT', () => {
-    testHostComponent.setInput('different test input');
+    testHostComponent.componentUnderTestComponent.input = 'different test input';
     testHostFixture.detectChanges();
     expect(testHostFixture.nativeElement.querySelector('div').innerText).toEqual('DIFFERENT TEST INPUT');
   });
   @Component({
     selector: `host-component`,
-    template: `<component-under-test [input]="input"></component-under-test>`
+    template: `<component-under-test></component-under-test>`
   })
   class TestHostComponent {
-    private input: string;
-
-    setInput(newInput: string) {
-      this.input = newInput;
-    }
+    @ViewChild(ComponentUnderTestComponent)
+    public componentUnderTestComponent: ComponentUnderTestComponent;
   }
 });
